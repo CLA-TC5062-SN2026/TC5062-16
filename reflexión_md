@@ -1,0 +1,139 @@
+# Reflexión sobre SCRUM y el uso de IA
+
+**Proyecto:** LaundryDesk — 21st Street Laundry
+**Contexto:** generación del Product Backlog a partir de `SRS_equipo.md` con
+apoyo de un agente de IA, y simulación del rol de Product Owner.
+
+---
+
+## 1. ¿Qué ventajas y riesgos identificas en usar un agente de IA para generar el Product Backlog?
+
+### Ventajas
+
+**Velocidad y cobertura.** El agente produjo 15 historias con criterios de
+aceptación, estimaciones y trazabilidad a partir del SRS en minutos. Hacerlo
+a mano habría tomado varias horas y probablemente habríamos omitido
+requerimientos del documento al transcribirlos.
+
+**Trazabilidad sistemática.** Cada historia quedó ligada a los requerimientos
+que la originan. Un agente no se cansa de hacer esa correspondencia, que es
+justo el trabajo tedioso que una persona tiende a abreviar.
+
+**Consistencia de formato.** Todas las historias siguen la misma estructura y
+el mismo nivel de detalle en los criterios de aceptación. Esa uniformidad
+facilita después crear los Issues y estimar de forma comparable.
+
+**Detección de problemas en el documento de origen.** Al construir el backlog,
+el agente señaló por iniciativa propia que HU-01 y HU-14 estaban etiquetadas
+como prioridad Alta sin merecerlo, y que existían dependencias de datos
+implícitas entre historias. Son observaciones que surgieron de leer el SRS con
+más atención de la que habíamos aplicado nosotros.
+
+### Riesgos
+
+**No distingue entre lo que el documento dice y lo que él supone.** Al
+justificar la posición de una historia, el agente afirmó que el negocio
+comunica sus precios "por letrero, teléfono y redes". Los letreros no aparecen
+en ninguna fuente del proyecto. La conclusión era correcta, pero el sustento
+era inventado, y presentado con la misma seguridad que los datos verificados.
+
+**Prioriza por dependencia y lo presenta como valor de negocio.** El agente
+ordenó bien qué debe construirse antes que otra cosa, pero cuando el valor no
+podía deducirse del documento, eligió una interpretación razonable que resultó
+contraria a lo que el cliente real quiere. Nada en su respuesta indicaba que
+esa parte era una suposición.
+
+**Uniformidad que esconde falta de criterio.** Todas las estimaciones
+quedaron en 3 o 5 puntos, y once de quince historias en prioridad Alta. Una
+escala que no discrimina no está estimando, y una lista donde casi todo es
+prioritario no está priorizando. El resultado se ve ordenado y profesional,
+que es precisamente lo que dificulta notar el problema.
+
+**Cede ante la presión en lugar de defender su posición.** A lo largo del
+proyecto, el agente modificó su propuesta cada vez que se le cuestionó un
+punto. Cuando tenía razón, eso significa que un cuestionamiento equivocado
+habría bastado para empeorar el resultado. Su acuerdo no es evidencia de que
+uno tenga razón.
+
+**Riesgo de adopción acrítica.** El backlog generado es suficientemente bueno
+como para aceptarlo sin revisar, y ese es el riesgo real: el costo de
+revisarlo es visible e inmediato, mientras que el costo de no revisarlo
+aparece semanas después, cuando ya se construyó sobre una priorización
+equivocada.
+
+---
+
+## 2. ¿Puede un agente reemplazar al Product Owner? Argumenta tu posición
+
+No, y en este proyecto pudimos comprobar exactamente dónde falla.
+
+El Product Owner no es quien redacta historias: es quien decide qué vale más
+para el negocio y responde por esa decisión. Esas dos cosas, decidir el valor
+y responder por ello, son las que el agente no puede asumir.
+
+**No tiene acceso a la fuente del valor.** Al pedirle que priorizara el
+backlog como Product Owner, el agente colocó en sexto lugar la consulta
+pública del estado del pedido y en octavo la notificación automática,
+razonando que la consulta ya cubre la necesidad y el aviso es una mejora
+adicional. El dueño del negocio sostiene lo contrario: describe el sistema
+como una herramienta interna de operación y la notificación como lo que de
+verdad resuelve su problema. Esa información no estaba en el SRS, ni podía
+estarlo, porque surgió de una conversación. El agente no eligió mal: eligió
+con la única información disponible, y esa información era insuficiente.
+
+**No puede negociar el alcance.** Buena parte del trabajo real de un Product
+Owner consiste en decirle al cliente que algo no se va a construir y sostener
+esa decisión. En este proyecto el cliente indicó que el servicio de
+recolección y entrega a domicilio es su punto de partida, lo que excede lo que
+podemos entregar en un trimestre. Resolver eso exige conversar con una
+persona, explicar una restricción y llegar a un acuerdo. Un agente no tiene
+con quién ni por qué negociar.
+
+**No asume consecuencias.** Si la priorización resulta equivocada, el costo lo
+paga el negocio y la responsabilidad recae en el equipo. Un rol que existe
+para asumir el riesgo de una decisión no puede delegarse en algo que no puede
+asumirlo.
+
+**Lo que sí puede hacer, y conviene aprovechar.** El agente es un buen
+asistente del Product Owner: ordena por dependencias, detecta inconsistencias
+en el documento, propone un corte de MVP coherente, mantiene la trazabilidad y
+genera un borrador discutible en minutos. Contrastar su priorización con la
+propia fue más útil que hacer la priorización desde cero, porque obligó a
+justificar cada diferencia. El error no está en usarlo, sino en tratar su
+salida como una decisión y no como una propuesta.
+
+---
+
+## 3. ¿Cómo afecta la calidad del SRS a la calidad del backlog generado?
+
+De forma directa, pero no de la manera que la pregunta sugiere. La experiencia
+de este proyecto es que la calidad del SRS determina la calidad del backlog
+hasta un límite, y que ese límite lo marca lo que un documento no puede
+contener.
+
+**Lo que un SRS bien hecho sí garantiza.** Como nuestro SRS consolidado tiene
+requerimientos con criterios de aceptación en formato Given-When-Then e
+identificadores propios, las historias heredaron criterios verificables y
+trazabilidad sin esfuerzo adicional. Donde el SRS fue ambiguo, el backlog
+también lo fue: RD-03 no define una fórmula de precio por libra porque los SRS
+individuales no coincidían, y como consecuencia HU-05 quedó redactada de forma
+genérica y fue estimada a la baja.
+
+También se cumple a la inversa: lo que el SRS no contiene, el backlog no lo
+inventa. Nuestro SRS excluye la recolección a domicilio, así que ninguna
+historia la contempla, aunque el cliente la haya pedido como punto de partida.
+Un agente no puede generar historias para necesidades que nadie documentó.
+
+**El límite.** Nuestro SRS está razonablemente bien hecho y aun así el backlog
+quedó mal priorizado. La razón es que un SRS describe qué debe hacer el
+sistema, pero no qué importa más. Un requerimiento correctamente especificado
+no dice si resuelve el problema central del negocio o si es un complemento
+prescindible. El agente dedujo esa jerarquía del orden y la redacción del
+documento, que no son indicadores de valor.
+
+**Conclusión.** La calidad del SRS fija el techo de calidad del backlog:
+ningún backlog será mejor que la especificación de la que parte. Pero alcanzar
+ese techo no basta para obtener un buen backlog, porque la priorización
+depende de información que vive en el negocio y no en el documento. Un SRS
+excelente produce historias bien formadas; solo el contacto con el stakeholder
+produce un orden correcto.
