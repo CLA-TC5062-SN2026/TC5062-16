@@ -1,0 +1,22 @@
+{
+  "name": "laundrydesk-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "verify:servicios": "vite build --config vite.verify.config.js --mode verify && node run-verify.mjs"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.2.1",
+    "vite": "^8.3.6"
+  }
+}

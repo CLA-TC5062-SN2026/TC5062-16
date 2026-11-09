@@ -1,0 +1,33 @@
+:root {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  color: #212529;
+  background-color: #f8f9fa;
+}
+
+html {
+  min-width: 320px;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  color: #212529;
+  background-color: #f8f9fa;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Indicador visible para navegación mediante teclado */
+:focus-visible {
+  outline: 3px solid #0a58ca;
+  outline-offset: 3px;
+}
