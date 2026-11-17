@@ -1,21 +1,28 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button.jsx'
 import Card from '../components/Card.jsx'
 import InputField from '../components/InputField.jsx'
 import Navbar from '../components/Navbar.jsx'
+import { useAuth } from '../context/AuthContext.jsx'
+import * as seguimientosService from '../services/seguimientosService.js'
 
 function HomePage() {
+  const navigate = useNavigate()
+  const { administrador, estaAutenticado, cerrarSesion } = useAuth()
+
   const [codigo, setCodigo] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     setMessage('')
 
-    if (codigo.trim().length < 5) {
+    const codigoLimpio = codigo.trim()
+
+    if (codigoLimpio.length < 5) {
       setError('Ingresa un código de seguimiento válido.')
       return
     }
@@ -23,12 +30,22 @@ function HomePage() {
     setError('')
     setIsLoading(true)
 
-    window.setTimeout(() => {
-      setIsLoading(false)
+    try {
+      const pedido = await seguimientosService.consultar(codigoLimpio)
+
       setMessage(
-        `Consulta de demostración realizada para ${codigo.trim()}.`
+        `Estado de tu pedido: ${pedido.estado_actual}.`
       )
-    }, 700)
+    } catch (error) {
+      setError(
+        error?.codigo === 'NO_ENCONTRADO'
+          ? 'No encontramos un pedido con ese código.'
+          : error?.mensaje ||
+            'No fue posible consultar el pedido. Intenta de nuevo.'
+      )
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleClear = () => {
@@ -47,11 +64,11 @@ function HomePage() {
       </a>
 
       <Navbar
-        isAuthenticated={isAuthenticated}
-        userName="Diego"
+        isAuthenticated={estaAutenticado}
+        userName={administrador?.usuario || 'Administrador'}
         userRole="Administrador"
-        onLogin={() => setIsAuthenticated(true)}
-        onLogout={() => setIsAuthenticated(false)}
+        onLogin={() => navigate('/login')}
+        onLogout={cerrarSesion}
       />
 
       <main
@@ -75,7 +92,7 @@ function HomePage() {
               title="Seguimiento de pedido"
               footer={
                 <small className="text-body-secondary">
-                  Pantalla demostrativa de los componentes de LaundryDesk.
+                  Consulta pública del estado de tu pedido.
                 </small>
               }
             >
